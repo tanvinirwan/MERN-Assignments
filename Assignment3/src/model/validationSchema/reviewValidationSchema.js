@@ -1,0 +1,94 @@
+
+const Joi = require("joi");
+
+
+// to create review
+const createReviewSchema = Joi.object({
+    title: Joi.string()
+        .trim()
+        .min(3)
+        .max(80)
+        .required(),
+
+    comment: Joi.string()
+        .trim()
+        .min(10)
+        .max(500)
+        .required(),
+
+    rating: Joi.number()
+        .integer()
+        .min(1)
+        .max(5)
+        .required(),
+
+    reviewerName: Joi.string()
+        .trim()
+        .min(2)
+        .max(50)
+        .required()
+});
+
+
+// to get review
+const getReviewsSchema = Joi.object({
+    status: Joi.string()
+        .valid("pending", "approved", "rejected"),
+
+    minRating: Joi.number()
+        .min(1)
+        .max(5),
+
+    page: Joi.number()
+        .integer()
+        .min(1)
+        .default(1),
+
+    limit: Joi.number()
+        .integer()
+        .min(1)
+        .max(20)
+        .default(10)
+});
+
+
+
+//to get review id
+const reviewIdSchema = Joi.object({
+    id: Joi.string()
+        .hex()
+        .length(24)
+        .required()
+});
+
+
+// to update the review
+const updateReviewSchema = Joi.object({
+    title: Joi.string()
+        .trim()
+        .min(3)
+        .max(80),
+
+    comment: Joi.string()
+        .trim()
+        .min(10)
+        .max(500),
+
+    rating: Joi.number()
+        .integer()
+        .min(1)
+        .max(5),
+
+    reviewerName: Joi.string()
+        .trim()
+        .min(2)
+        .max(50)
+}).min(1);
+
+
+module.exports = {
+    createReviewSchema,
+    getReviewsSchema,
+    reviewIdSchema,
+    updateReviewSchema
+};
